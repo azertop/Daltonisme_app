@@ -3,6 +3,19 @@ from streamlit_option_menu import option_menu
 import cv2
 import PIL.Image as im
 import numpy as np
+from streamlit_webrtc import webrtc_streamer, VideoHTMLAttributes
+import av
+
+class VideoProcessor:
+    def recv(self, frame):
+        img = frame.to_ndarray(format="rgb24")
+        if bleu :
+            img = daltonisme(img,"bleu")
+        if rouge :
+            img = daltonisme(img,"rouge")
+        if vert:
+            img = daltonisme(img,"vert")
+        return av.VideoFrame.from_ndarray(img, format="rgb24")
 
 st.title("Simulateur de daltonisme")
 
@@ -11,13 +24,10 @@ with st.sidebar :
     bleu = st.checkbox("Bleu")
     rouge = st.checkbox("Rouge")
     vert = st.checkbox("Vert")
-    if choice == "Webcam":
-        check = st.checkbox("Run")
     
 FRAME = st.image([])    
     
-if choice == "Webcam":
-    cap = cv2.VideoCapture(1)
+
 def daltonisme(img,type:str) :
     lms_matrix = np.array(
         [[0.3904725 , 0.54990437, 0.00890159],
@@ -41,20 +51,12 @@ def daltonisme(img,type:str) :
         )
     img = np.tensordot(img, rgb_matrix, axes=([2], [1])).astype(np.uint8)
     return img    
+
 if choice == "Webcam":
     st.subheader("Simulation Webcam")
-    while check:
-        succes,img = cap.read()
-        img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
-        if bleu :
-            img = daltonisme(img,"bleu")
-        if rouge :
-            img = daltonisme(img,"rouge")
-        if vert:
-            img = daltonisme(img,"vert")
-        FRAME.image(img)
-    else :
-        pass
+    webrtc_streamer(key="example", video_processor_factory=VideoProcessor,video_html_attrs=VideoHTMLAttributes(
+        autoPlay=True, controls=True, style={"width": "100%"}, muted=True
+    ))
 elif choice == "Image":
     st.subheader("Simulation Image")
     img = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
