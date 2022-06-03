@@ -23,11 +23,11 @@ class VideoProcessor:
 
 st.title("Simulateur de daltonisme")
 
-with st.sidebar :
-    choice = st.selectbox("Image",["Image","Webcam"])
-    bleu = st.checkbox("Bleu")
-    rouge = st.checkbox("Rouge")
-    vert = st.checkbox("Vert")
+# with st.sidebar :
+#     choice = st.selectbox("Image",["Image","Webcam"])
+#     bleu = st.checkbox("Bleu")
+#     rouge = st.checkbox("Rouge")
+#     vert = st.checkbox("Vert")
     
 choices = st.multiselect("Type de daltonisme", ["Deutéranopie (Vert)","Protanopie (Rouge)","Tritanopie (Bleu)"])  
     
@@ -56,11 +56,12 @@ def daltonisme(img,type:str) :
     img = np.tensordot(img, rgb_matrix, axes=([2], [1])).astype(np.uint8)
     return img    
 
-if choice == "Webcam":
-    st.subheader("Simulation Webcam")
-    webrtc_streamer(key="example",mode=WebRtcMode.SENDRECV, media_stream_constraints={"video": True, "audio": False}, rtc_configuration=RTC_CONFIGURATION
-    )
-elif choice == "Image":
+# if choice == "Webcam":
+#     st.subheader("Simulation Webcam")
+#     webrtc_streamer(key="example",mode=WebRtcMode.SENDRECV, media_stream_constraints={"video": True, "audio": False}, rtc_configuration=RTC_CONFIGURATION
+#     )
+#elif choice == "Image":
+if True:
     st.subheader("Simulation Image")
     img = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
     if img != None:
