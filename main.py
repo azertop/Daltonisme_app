@@ -3,10 +3,13 @@ from streamlit_option_menu import option_menu
 import cv2
 import PIL.Image as im
 import numpy as np
-from streamlit_webrtc import webrtc_streamer, VideoHTMLAttributes
+from streamlit_webrtc import webrtc_streamer, RTCConfiguration
 import av
 from streamlit_image_comparison import image_comparison
 
+RTC_CONFIGURATION = RTCConfiguration(
+    {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
+)
 class VideoProcessor:
     def recv(self, frame):
         img = frame.to_ndarray(format="rgb24")
@@ -20,11 +23,11 @@ class VideoProcessor:
 
 st.title("Simulateur de daltonisme")
 
-#with st.sidebar :
-#     choice = st.selectbox("Image",["Image","Webcam"])
-#     bleu = st.checkbox("Bleu")
-#     rouge = st.checkbox("Rouge")
-#     vert = st.checkbox("Vert")
+with st.sidebar :
+    choice = st.selectbox("Image",["Image","Webcam"])
+    bleu = st.checkbox("Bleu")
+    rouge = st.checkbox("Rouge")
+    vert = st.checkbox("Vert")
     
 choices = st.multiselect("Type de daltonisme", ["Deutéranopie (Vert)","Protanopie (Rouge)","Tritanopie (Bleu)"])  
     
@@ -53,25 +56,22 @@ def daltonisme(img,type:str) :
     img = np.tensordot(img, rgb_matrix, axes=([2], [1])).astype(np.uint8)
     return img    
 
-# if choice == "Webcam":
-#     st.subheader("Simulation Webcam")
-#     webrtc_streamer(key="example", video_processor_factory=VideoProcessor,video_html_attrs=VideoHTMLAttributes(
-#         autoPlay=True, controls=True, style={"width": "100%"}, muted=True
-#     ))
-# elif choice == "Image":
-
-
-st.subheader("Simulation Image")
-img = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
-if img != None:
-    img = im.open(img)
-    img = np.array(img)
-    img1 = np.array(img)
-    if "Tritanopie (Bleu)" in choices :
-        img1 = daltonisme(img,"bleu")
-        st.write("Blavla")
-    if "Protanopie (Rouge)" in choices :
-        img1 = daltonisme(img,"rouge")
-    if "Deutéranopie (Vert)" in choices:
-        img1 = daltonisme(img,"vert")
-    image_comparison(img1=img,img2=img1)    
+if choice == "Webcam":
+    st.subheader("Simulation Webcam")
+    webrtc_streamer(key="example", media_stream_constraints={"video": True, "audio": False}, rtc_configuration=RTC_CONFIGURATION
+    )
+elif choice == "Image":
+    st.subheader("Simulation Image")
+    img = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
+    if img != None:
+        img = im.open(img)
+        img = np.array(img)
+        img1 = np.array(img)
+        if "Tritanopie (Bleu)" in choices :
+            img1 = daltonisme(img,"bleu")
+            st.write("Blavla")
+        if "Protanopie (Rouge)" in choices :
+            img1 = daltonisme(img,"rouge")
+        if "Deutéranopie (Vert)" in choices:
+            img1 = daltonisme(img,"vert")
+        image_comparison(img1=img,img2=img1)    
