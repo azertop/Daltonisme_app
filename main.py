@@ -28,8 +28,8 @@ st.title("Simulateur de daltonisme")
 #     bleu = st.checkbox("Bleu")
 #     rouge = st.checkbox("Rouge")
 #     vert = st.checkbox("Vert")
-    
-choices = st.multiselect("Type de daltonisme", ["Deutéranopie (Vert)","Protanopie (Rouge)","Tritanopie (Bleu)"])  
+st.write("## Type de daltonisme :")
+choices = st.multiselect("", ["Deutéranopie (Vert)","Protanopie (Rouge)","Tritanopie (Bleu)"])  
     
 
 def daltonisme(img,type:str) :
