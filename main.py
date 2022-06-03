@@ -62,7 +62,6 @@ def daltonisme(img,type:str) :
 #     )
 #elif choice == "Image":
 
-st.subheader("Simulation Image")
 img = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
 if img != None:
     img = im.open(img)
