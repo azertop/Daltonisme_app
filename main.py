@@ -61,18 +61,18 @@ def daltonisme(img,type:str) :
 #     webrtc_streamer(key="example",mode=WebRtcMode.SENDRECV, media_stream_constraints={"video": True, "audio": False}, rtc_configuration=RTC_CONFIGURATION
 #     )
 #elif choice == "Image":
-if True:
-    st.subheader("Simulation Image")
-    img = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
-    if img != None:
-        img = im.open(img)
-        img = np.array(img)
-        img1 = np.array(img)
-        if "Tritanopie (Bleu)" in choices :
-            img1 = daltonisme(img,"bleu")
-            st.write("Blavla")
-        if "Protanopie (Rouge)" in choices :
-            img1 = daltonisme(img,"rouge")
-        if "Deutéranopie (Vert)" in choices:
-            img1 = daltonisme(img,"vert")
-        image_comparison(img1=img,img2=img1)    
+
+st.subheader("Simulation Image")
+img = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
+if img != None:
+    img = im.open(img)
+    img = np.array(img)
+    img1 = np.array(img)
+    if "Tritanopie (Bleu)" in choices :
+        img1 = daltonisme(img,"bleu")
+        st.write("Blavla")
+    if "Protanopie (Rouge)" in choices :
+        img1 = daltonisme(img,"rouge")
+    if "Deutéranopie (Vert)" in choices:
+        img1 = daltonisme(img,"vert")
+    image_comparison(img1=img,img2=img1)    
