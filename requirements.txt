@@ -1,5 +1,0 @@
-streamlit == 0.84.0
-streamlit_option_menu==0.3.2
-opencv-contrib-python==4.1.0.25
-numpy
-Pillow
