@@ -4,3 +4,4 @@ Streamlit>= 1.9.2
 opencv-contrib-python-headless
 protobuf<=3.20.1
 streamlit_webrtc
+streamlit_image_comparison
