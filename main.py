@@ -17,7 +17,7 @@ with st.sidebar :
 FRAME = st.image([])    
     
 if choice == "Webcam":
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
 def daltonisme(img,type:str) :
     lms_matrix = np.array(
         [[0.3904725 , 0.54990437, 0.00890159],
