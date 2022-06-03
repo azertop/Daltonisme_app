@@ -5,6 +5,7 @@ import PIL.Image as im
 import numpy as np
 from streamlit_webrtc import webrtc_streamer, VideoHTMLAttributes
 import av
+from streamlit_image_comparison import image_comparison
 
 class VideoProcessor:
     def recv(self, frame):
@@ -19,13 +20,13 @@ class VideoProcessor:
 
 st.title("Simulateur de daltonisme")
 
-with st.sidebar :
-    choice = st.selectbox("Image",["Image","Webcam"])
-    bleu = st.checkbox("Bleu")
-    rouge = st.checkbox("Rouge")
-    vert = st.checkbox("Vert")
+#with st.sidebar :
+#     choice = st.selectbox("Image",["Image","Webcam"])
+#     bleu = st.checkbox("Bleu")
+#     rouge = st.checkbox("Rouge")
+#     vert = st.checkbox("Vert")
     
-FRAME = st.image([])    
+choices = st.multiselect("Type de daltonisme", ["Deutéranopie (Vert)","Protanopie (Rouge)","Tritanopie (Bleu)"])  
     
 
 def daltonisme(img,type:str) :
@@ -52,21 +53,25 @@ def daltonisme(img,type:str) :
     img = np.tensordot(img, rgb_matrix, axes=([2], [1])).astype(np.uint8)
     return img    
 
-if choice == "Webcam":
-    st.subheader("Simulation Webcam")
-    webrtc_streamer(key="example", video_processor_factory=VideoProcessor,video_html_attrs=VideoHTMLAttributes(
-        autoPlay=True, controls=True, style={"width": "100%"}, muted=True
-    ))
-elif choice == "Image":
-    st.subheader("Simulation Image")
-    img = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
-    if img != None:
-        img = im.open(img)
-        img = np.array(img)
-        if bleu :
-            img = daltonisme(img,"bleu")
-        if rouge :
-            img = daltonisme(img,"rouge")
-        if vert:
-            img = daltonisme(img,"vert")
-        FRAME.image(img)
+# if choice == "Webcam":
+#     st.subheader("Simulation Webcam")
+#     webrtc_streamer(key="example", video_processor_factory=VideoProcessor,video_html_attrs=VideoHTMLAttributes(
+#         autoPlay=True, controls=True, style={"width": "100%"}, muted=True
+#     ))
+# elif choice == "Image":
+
+
+st.subheader("Simulation Image")
+img = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
+if img != None:
+    img = im.open(img)
+    img = np.array(img)
+    img1 = np.array(img)
+    if "Tritanopie (Bleu)" in choices :
+        img1 = daltonisme(img,"bleu")
+        st.write("Blavla")
+    if "Protanopie (Rouge)" in choices :
+        img1 = daltonisme(img,"rouge")
+    if "Deutéranopie (Vert)" in choices:
+        img1 = daltonisme(img,"vert")
+    image_comparison(img1=img,img2=img1)    
