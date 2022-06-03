@@ -3,7 +3,7 @@ from streamlit_option_menu import option_menu
 import cv2
 import PIL.Image as im
 import numpy as np
-from streamlit_webrtc import webrtc_streamer, RTCConfiguration
+from streamlit_webrtc import webrtc_streamer, RTCConfiguration,WebRtcMode
 import av
 from streamlit_image_comparison import image_comparison
 
@@ -58,7 +58,7 @@ def daltonisme(img,type:str) :
 
 if choice == "Webcam":
     st.subheader("Simulation Webcam")
-    webrtc_streamer(key="example", media_stream_constraints={"video": True, "audio": False}, rtc_configuration=RTC_CONFIGURATION
+    webrtc_streamer(key="example",mode=WebRtcMode.SENDRECV, media_stream_constraints={"video": True, "audio": False}, rtc_configuration=RTC_CONFIGURATION
     )
 elif choice == "Image":
     st.subheader("Simulation Image")
