@@ -10,16 +10,16 @@ from streamlit_image_comparison import image_comparison
 RTC_CONFIGURATION = RTCConfiguration(
     {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
 )
-class VideoProcessor:
-    def recv(self, frame):
-        img = frame.to_ndarray(format="rgb24")
-        if bleu :
-            img = daltonisme(img,"bleu")
-        if rouge :
-            img = daltonisme(img,"rouge")
-        if vert:
-            img = daltonisme(img,"vert")
-        return av.VideoFrame.from_ndarray(img, format="rgb24")
+# class VideoProcessor:
+#     def recv(self, frame):
+#         img = frame.to_ndarray(format="rgb24")
+#         if bleu :
+#             img = daltonisme(img,"bleu")
+#         if rouge :
+#             img = daltonisme(img,"rouge")
+#         if vert:
+#             img = daltonisme(img,"vert")
+#         return av.VideoFrame.from_ndarray(img, format="rgb24")
 
 st.title("Simulateur de daltonisme")
 
@@ -65,7 +65,9 @@ def daltonisme(img,type:str) :
 img = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
 if img != None:
     img = im.open(img)
+    img = img.convert('RGB')
     img = np.array(img)
+    st.write(img.shape)
     img1 = np.array(img)
     if "Tritanopie (Bleu)" in choices :
         img1 = daltonisme(img,"bleu")
