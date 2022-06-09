@@ -67,7 +67,6 @@ if img != None:
     img = im.open(img)
     img = img.convert('RGB')
     img = np.array(img)
-    st.write(img.shape)
     img1 = np.array(img)
     if "Tritanopie (Bleu)" in choices :
         img1 = daltonisme(img,"bleu")
